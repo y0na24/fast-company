@@ -30,7 +30,7 @@ const Users = ({ allUsers, ...rest }) => {
     setCurrentPage(pageIndex)
   }
   const filteredUsers = selectedProf
-    ? allUsers.filter((user) => user.profession.name === selectedProf)
+    ? allUsers.filter((user) => user.profession.name === selectedProf.name)
     : allUsers
   const count = filteredUsers.length
   const userCrop = paginate(filteredUsers, currentPage, pageSize)
