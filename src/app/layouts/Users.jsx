@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { paginate } from '../utils/paginate'
-import Pagination from './pagination'
+import Pagination from '../components/Pagination'
 import api from '../api'
-import GroupList from './groupList'
-import SearchStatus from './searchStatus'
-import UsersTable from './usersTable'
+import GroupList from '../components/GroupList'
+import SearchStatus from '../components/SearchStatus'
+import UsersTable from '../components/UsersTable'
 import _ from 'lodash'
 
 const Users = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [professions, setProfessions] = useState()
   const [selectedProf, setSelectedProf] = useState()
-  const [sortBy, setSortBy] = useState({ iter: 'name', order: 'asc' })
+  const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' })
   const pageSize = 8
 
   const [users, setUsers] = useState()
