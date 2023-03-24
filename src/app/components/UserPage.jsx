@@ -1,34 +1,39 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import API from '../api'
-import Quality from './Quality'
+import PropTypes from 'prop-types'
+import api from '../api'
+import QualitiesList from './QualitiesList'
+import { useHistory } from 'react-router-dom'
 
-const UserPage = () => {
+const UserPage = ({ userId }) => {
+  const history = useHistory()
   const [user, setUser] = useState()
-  const userId = useParams().userId
+
   useEffect(() => {
-    API.users.getById(userId).then((data) => setUser(data))
+    api.users.getById(userId).then((user) => setUser(user))
   }, [])
+
+  const handleClick = () => {
+    history.push('/users')
+  }
 
   if (user) {
     return (
       <>
         <h1>{user.name}</h1>
         <h2>Профессия: {user.profession.name}</h2>
-        <Quality
-          color={user.qualities[0].color}
-          name={user.qualities[0].name}
-        />
-        <p>Completed meetings: {user.completedMeetings}</p>
+        <QualitiesList qualities={user.qualities} />
+        <p>completed meetings: {user.completedMeetings}</p>
         <h2>Rate: {user.rate}</h2>
-        <Link to="/users">
-          <button>Все пользователи</button>
-        </Link>
-        {console.log(user)}
+        <button onClick={handleClick}>Все пользователи</button>
       </>
     )
+  } else {
+    return <h1>Loading</h1>
   }
-  return <h1>Loading</h1>
+}
+
+UserPage.propTypes = {
+  userId: PropTypes.string.isRequired
 }
 
 export default UserPage
