@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import BookMark from './Bookmark'
+import BookMark from './BookMark'
 import QualitiesList from './QualitiesList'
 import Table from './Table'
 import { Link } from 'react-router-dom'
