@@ -75,6 +75,15 @@ const UsersList = () => {
     })
   }
 
+  const clearSearch = () => {
+    setSearchTerm('')
+  }
+
+  const handleSearchChange = (event) => {
+    const { value } = event.target
+    setSearchTerm(value)
+  }
+
   const searchedUsers = searchUsers(users, searchTerm)
 
   if (searchedUsers) {
@@ -112,6 +121,9 @@ const UsersList = () => {
               onUpdateSearch={onUpdateSearch}
               selectedProf={selectedProf}
               clearFilter={clearFilter}
+              searchTerm={searchTerm}
+              clearSearch={clearSearch}
+              handleSearchChange={handleSearchChange}
             />
             {count > 0 && (
               <UsersTable

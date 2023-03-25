@@ -1,9 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const SearchBar = ({ onUpdateSearch, selectedProf, clearFilter }) => {
-  const [searchTerm, setSearchTerm] = React.useState('')
-
+const SearchBar = ({
+  onUpdateSearch,
+  selectedProf,
+  clearFilter,
+  searchTerm,
+  clearSearch,
+  handleSearchChange
+}) => {
   React.useEffect(() => {
     onUpdateSearch(searchTerm)
     if (searchTerm.length > 0) {
@@ -16,15 +21,6 @@ const SearchBar = ({ onUpdateSearch, selectedProf, clearFilter }) => {
       clearSearch()
     }
   }, [selectedProf])
-
-  const handleSearchChange = (event) => {
-    const { value } = event.target
-    setSearchTerm(value)
-  }
-
-  const clearSearch = () => {
-    setSearchTerm('')
-  }
 
   return (
     <input
@@ -41,7 +37,10 @@ const SearchBar = ({ onUpdateSearch, selectedProf, clearFilter }) => {
 SearchBar.propTypes = {
   onUpdateSearch: PropTypes.func,
   selectedProf: PropTypes.object,
-  clearFilter: PropTypes.func
+  clearFilter: PropTypes.func,
+  searchTerm: PropTypes.string,
+  clearSearch: PropTypes.func,
+  handleSearchChange: PropTypes.func
 }
 
 export default SearchBar
