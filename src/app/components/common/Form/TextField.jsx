@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 const TextField = ({ label, type, name, value, error, onChange }) => {
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = React.useState(false)
 
   const toggleShowPassword = () => {
     setShowPassword((prevState) => !prevState)

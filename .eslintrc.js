@@ -15,7 +15,7 @@ module.exports = {
       'error',
       { anonymous: 'always', named: 'never' }
     ],
-
+    'multiline-ternary': ['off'],
     indent: 'off'
   }
 }

@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import { paginate } from '../utils/paginate'
-import Pagination from '../components/Pagination'
-import api from '../api'
-import GroupList from '../components/GroupList'
-import SearchStatus from '../components/SearchStatus'
-import UsersTable from '../components/UsersTable'
+import React from 'react'
+import { paginate } from '../../../utils/paginate'
+import Pagination from '../../common/Pagination'
+import api from '../../../api'
+import GroupList from '../../common/GroupList'
+import SearchStatus from '../../ui/SearchStatus'
+import UsersTable from '../../ui/UsersTable'
 import _ from 'lodash'
-import SearchBar from './SearchBar'
 
-const UsersList = () => {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [professions, setProfessions] = useState()
-  const [selectedProf, setSelectedProf] = useState()
-  const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' })
-  const [searchTerm, setSearchTerm] = useState('')
+const UsersListPage = () => {
+  const [currentPage, setCurrentPage] = React.useState(1)
+  const [professions, setProfessions] = React.useState()
+  const [searchQuery, setSearchQuery] = React.useState('')
+  const [selectedProf, setSelectedProf] = React.useState()
+  const [sortBy, setSortBy] = React.useState({ path: 'name', order: 'asc' })
 
   const pageSize = 8
 
-  const [users, setUsers] = useState()
+  const [users, setUsers] = React.useState()
 
-  useEffect(() => {
+  React.useEffect(() => {
     api.users.fetchAll().then((data) => setUsers(data))
   }, [])
 
@@ -37,20 +36,22 @@ const UsersList = () => {
     )
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     api.professions.fetchAll().then((data) => setProfessions(data))
   }, [])
 
-  useEffect(() => {
+  React.useEffect(() => {
     setCurrentPage(1)
-  }, [selectedProf])
-
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [searchTerm])
+  }, [selectedProf, searchQuery])
 
   const handleProfessionSelect = (item) => {
+    if (searchQuery !== '') setSearchQuery('')
     setSelectedProf(item)
+  }
+
+  const handleSearchQuery = ({ target }) => {
+    setSelectedProf(undefined)
+    setSearchQuery(target.value)
   }
 
   const handlePageChange = (pageIndex) => {
@@ -61,38 +62,18 @@ const UsersList = () => {
     setSortBy(item)
   }
 
-  const onUpdateSearch = (term) => {
-    setSearchTerm(term)
-  }
-
-  const searchUsers = (items, term) => {
-    if (term.length === 0) {
-      return items
-    }
-
-    return items.filter((item) => {
-      return item.name.toLowerCase().indexOf(term.toLowerCase()) > -1
-    })
-  }
-
-  const clearSearch = () => {
-    setSearchTerm('')
-  }
-
-  const handleSearchChange = (event) => {
-    const { value } = event.target
-    setSearchTerm(value)
-  }
-
-  const searchedUsers = searchUsers(users, searchTerm)
-
-  if (searchedUsers) {
-    const filteredUsers = selectedProf
-      ? searchedUsers.filter(
+  if (users) {
+    const filteredUsers = searchQuery
+      ? users.filter(
+          (user) =>
+            user.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1
+        )
+      : selectedProf
+      ? users.filter(
           (user) =>
             JSON.stringify(user.profession) === JSON.stringify(selectedProf)
         )
-      : searchedUsers
+      : users
     const count = filteredUsers.length
     const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order])
     const userCrop = paginate(sortedUsers, currentPage, pageSize)
@@ -117,13 +98,12 @@ const UsersList = () => {
           )}
           <div className="d-flex flex-column">
             <SearchStatus length={count} />
-            <SearchBar
-              onUpdateSearch={onUpdateSearch}
-              selectedProf={selectedProf}
-              clearFilter={clearFilter}
-              searchTerm={searchTerm}
-              clearSearch={clearSearch}
-              handleSearchChange={handleSearchChange}
+            <input
+              value={searchQuery}
+              onChange={handleSearchQuery}
+              type="text"
+              name="searchQuery"
+              placeholder="Search..."
             />
             {count > 0 && (
               <UsersTable
@@ -150,4 +130,4 @@ const UsersList = () => {
   return 'loading'
 }
 
-export default UsersList
+export default UsersListPage
