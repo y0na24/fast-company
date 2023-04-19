@@ -4,9 +4,15 @@ export const validator = (data, config) => {
     let statusValidate
 
     switch (validateMethod) {
-      case 'isRequired':
-        statusValidate = data.trim() === ''
-        break
+      case 'isRequired': {
+        if (typeof data === 'boolean') {
+          statusValidate = !data
+          break
+        } else {
+          statusValidate = data.trim() === ''
+          break
+        }
+      }
       case 'isEmail': {
         const emailRegExp = /^\S+@\S+\.\S+$/g
         statusValidate = !emailRegExp.test(data)
@@ -25,6 +31,12 @@ export const validator = (data, config) => {
       }
       case 'min': {
         statusValidate = data.length < config.value
+        break
+      }
+
+      case 'isFullName': {
+        const fullNameRegExp = /^[A-ЯЁ][а-яё]+\s[A-ЯЁ][а-яё]+$/
+        statusValidate = !fullNameRegExp.test(data)
         break
       }
 

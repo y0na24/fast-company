@@ -1,24 +1,30 @@
 import React from 'react'
 import TextField from '../common/Form/TextField'
 import { validator } from '../../utils/validator'
+import CheckBoxField from '../common/Form/CheckBoxField'
 
 const LoginForm = () => {
-  const [formData, setFormData] = React.useState({ email: '', password: '' })
+  const [formData, setFormData] = React.useState({
+    email: '',
+    password: '',
+    stayOn: false
+  })
   const [errors, setErrors] = React.useState({})
 
-  const handleChange = ({ target }) => {
+  const handleChange = (target) => {
     setFormData((prevState) => ({
       ...prevState,
       [target.name]: target.value
     }))
   }
+
   const validatorConfig = {
     email: {
       isRequired: { message: 'Почта обязательна для заполнения ' },
       isEmail: { message: 'Email введён некорректно' }
     },
     password: {
-      isRequired: { message: 'Пароль обязателен для заполнения ' },
+      isRequired: { message: 'Пароль обязателен для заполнения' },
       isCapitalSymbol: {
         message: 'Пароль должен содержать хотя бы одну заглавную букву'
       },
@@ -55,23 +61,30 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleFormSubmit}>
       <TextField
-        label="Почта"
-        name="email"
+        label='Почта'
+        name='email'
         value={formData.email}
         error={errors.email}
         onChange={handleChange}
       />
       <TextField
-        label="Пароль"
-        type="password"
-        name="password"
+        label='Пароль'
+        type='password'
+        name='password'
         error={errors.password}
         value={formData.password}
         onChange={handleChange}
       />
+      <CheckBoxField
+        onChange={handleChange}
+        name='stayOn'
+        value={formData.stayOn}
+      >
+        Оставаться в системе
+      </CheckBoxField>
       <button
-        className="btn btn-primary w-100 mx-auto"
-        type="submit"
+        className='btn btn-primary w-100 mx-auto'
+        type='submit'
         disabled={!isValid}
       >
         Submit

@@ -9,7 +9,7 @@ const GroupList = ({
   selectedItem
 }) => {
   return (
-    <ul className="list-group">
+    <ul className='list-group'>
       {Array.isArray(items)
         ? items.map((item) => (
             <li
@@ -18,7 +18,7 @@ const GroupList = ({
                 'list-group-item' + (item === selectedItem ? ' active' : '')
               }
               onClick={() => onItemSelect(item)}
-              role="button"
+              role='button'
             >
               {item[contentProperty]}
             </li>
@@ -30,7 +30,7 @@ const GroupList = ({
                 'list-group-item' + (item === selectedItem ? ' active' : '')
               }
               onClick={() => onItemSelect(item)}
-              role="button"
+              role='button'
             >
               {item[contentProperty]}
             </li>

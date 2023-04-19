@@ -15,16 +15,16 @@ const Login = () => {
 
   return (
     <>
-      <div className="container mt-5">
-        <div className="row">
-          <div className="col-md-6 offset-md-3 shadow p-4">
+      <div className='container mt-5'>
+        <div className='row'>
+          <div className='col-md-6 offset-md-3 shadow p-4'>
             {formType === 'register' ? (
               <>
-                <h3 className="mb-4">Register</h3>
+                <h3 className='mb-4'>Register</h3>
                 <RegisterForm />
                 <p>
                   Already have account?{''}
-                  <a role="button" onClick={toggleFormType}>
+                  <a role='button' onClick={toggleFormType}>
                     {''}
                     Sign in
                   </a>
@@ -32,11 +32,11 @@ const Login = () => {
               </>
             ) : (
               <>
-                <h3 className="mb-4">Login</h3>
+                <h3 className='mb-4'>Login</h3>
                 <LoginForm />
                 <p>
                   Do not have account?{''}
-                  <a role="button" onClick={toggleFormType}>
+                  <a role='button' onClick={toggleFormType}>
                     {''}
                     Sign up
                   </a>

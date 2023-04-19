@@ -83,27 +83,27 @@ const UsersListPage = () => {
 
     return (
       <>
-        <div className="d-flex">
+        <div className='d-flex'>
           {professions && (
-            <div className="d-flex flex-column flex-shrink-0 p-3">
+            <div className='d-flex flex-column flex-shrink-0 p-3'>
               <GroupList
                 items={professions}
                 onItemSelect={handleProfessionSelect}
                 selectedItem={selectedProf}
               />
-              <button className="btn btn-secondary mt-2" onClick={clearFilter}>
+              <button className='btn btn-secondary mt-2' onClick={clearFilter}>
                 Очистить
               </button>
             </div>
           )}
-          <div className="d-flex flex-column">
+          <div className='d-flex flex-column'>
             <SearchStatus length={count} />
             <input
               value={searchQuery}
               onChange={handleSearchQuery}
-              type="text"
-              name="searchQuery"
-              placeholder="Search..."
+              type='text'
+              name='searchQuery'
+              placeholder='Search...'
             />
             {count > 0 && (
               <UsersTable
@@ -114,7 +114,7 @@ const UsersListPage = () => {
                 onToggleBookMark={handleToggleBookMark}
               />
             )}
-            <div className="d-flex justify-content-center">
+            <div className='d-flex justify-content-center'>
               <Pagination
                 itemsCount={count}
                 pageSize={pageSize}

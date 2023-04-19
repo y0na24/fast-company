@@ -42,7 +42,7 @@ const UserTable = ({
     },
     delete: {
       component: (user) => (
-        <button onClick={() => onDelete(user._id)} className="btn btn-danger">
+        <button onClick={() => onDelete(user._id)} className='btn btn-danger'>
           delete
         </button>
       )
