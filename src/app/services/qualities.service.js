@@ -1,6 +1,6 @@
 import httpService from './http.service'
 
-const qualityEndPoint = '/quality'
+const qualityEndPoint = 'quality/'
 
 const qualitiesService = {
   get: async () => {

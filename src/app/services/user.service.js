@@ -1,6 +1,6 @@
 import httpService from './http.service'
 
-const userEndPoint = '/user'
+const userEndPoint = 'user/'
 
 const userSerivce = {
   get: async () => {
