@@ -16,12 +16,14 @@ const LoginForm = () => {
     stayOn: false
   })
   const [errors, setErrors] = React.useState({})
+  const [enterError, setEnterError] = React.useState(null)
 
   const handleChange = (target) => {
     setFormData((prevState) => ({
       ...prevState,
       [target.name]: target.value
     }))
+    setEnterError(null)
   }
 
   const validatorConfig = {
@@ -61,13 +63,13 @@ const LoginForm = () => {
     event.preventDefault()
     const isValid = validate()
     if (!isValid) return
-    console.log(formData)
 
     try {
       await signIn(formData)
+      console.log(formData)
       history.push('/')
     } catch (error) {
-      setErrors(error)
+      setEnterError(error.message)
     }
   }
 
@@ -95,6 +97,7 @@ const LoginForm = () => {
       >
         Оставаться в системе
       </CheckBoxField>
+      {enterError && <p className='text-danger'>{enterError}</p>}
       <button
         className='btn btn-primary w-100 mx-auto'
         type='submit'

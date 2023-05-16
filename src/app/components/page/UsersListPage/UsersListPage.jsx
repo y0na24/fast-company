@@ -17,8 +17,6 @@ const UsersListPage = () => {
 
   const { users } = useUser()
 
-  console.log(users)
-
   const pageSize = 8
 
   const handleDelete = (userId) => {

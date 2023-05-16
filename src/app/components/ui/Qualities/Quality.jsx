@@ -10,7 +10,7 @@ const Quality = ({ id }) => {
 }
 
 Quality.propTypes = {
-  id: PropTypes.stringf
+  id: PropTypes.string
 }
 
 export default Quality

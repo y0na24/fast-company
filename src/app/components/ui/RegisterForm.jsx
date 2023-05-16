@@ -22,12 +22,11 @@ const RegisterForm = () => {
     name: '',
     license: false
   })
+  const [errors, setErrors] = React.useState({})
 
   const { signUp } = useAuth()
-
   const { qualities } = useQualities()
   const { professions } = useProfessions()
-  const [errors, setErrors] = React.useState({})
 
   const handleChange = (target) => {
     setFormData((prevState) => ({

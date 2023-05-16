@@ -1,18 +1,44 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import configFile from '../../config.json'
+import { httpAuth } from '../hooks/useAuth'
+import localStorageService from './localStorage.service'
 
 const http = axios.create({
   baseURL: configFile.apiEndPoint
 })
 
 http.interceptors.request.use(
-  function (config) {
+  async function (config) {
     if (configFile.isFirebase) {
       const isContainSlash = /\/$/gi.test(config.url)
       config.url =
         (isContainSlash ? config.url.slice(0, -1) : config.url) + '.json'
+
+      const expiresDate = localStorageService.getTokenExipiresDate()
+      const refreshToken = localStorageService.getResfreshToken()
+
+      if (refreshToken && expiresDate < Date.now()) {
+        const { data } = await httpAuth.post('token', {
+          grant_type: 'refresh_token',
+          refresh_token: refreshToken
+        })
+
+        localStorageService.setTokens({
+          refreshToken: data.refresh_token,
+          idToken: data.id_token,
+          expiresIn: data.expires_in,
+          localId: data.user_id
+        })
+      }
+
+      const accessToken = localStorageService.getAccessToken()
+
+      if (accessToken) {
+        config.params = { ...config.params, auth: accessToken }
+      }
     }
+
     return config
   },
   function (error) {
@@ -21,11 +47,11 @@ http.interceptors.request.use(
 )
 
 const transformData = (data) => {
-  return data
+  return data && !data._id
     ? Object.keys(data).map((key) => ({
         ...data[key]
       }))
-    : []
+    : data
 }
 
 http.interceptors.response.use(
