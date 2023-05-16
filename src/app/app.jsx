@@ -6,6 +6,7 @@ import Users from './layouts/Users'
 import Main from './layouts/Main'
 import Login from './layouts/Login'
 import NavBar from './components/ui/NavBar'
+import ProtectedRoute from './components/common/ProtectedRoute'
 
 import { ProfessionProvider } from './hooks/useProfession'
 import { QualityProvider } from './hooks/useQualities'
@@ -23,7 +24,7 @@ function App() {
             <Switch>
               <Route exact path='/' component={Main} />
               <Route path='/login/:type?' component={Login} />
-              <Route path='/users/:userId?/:edit?' component={Users} />
+              <ProtectedRoute path='/users/:userId?/:edit?' component={Users} />
               <Redirect to='/' />
             </Switch>
           </QualityProvider>

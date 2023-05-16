@@ -24,6 +24,7 @@ export const useAuth = () => {
 const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = React.useState()
   const [error, setError] = React.useState(null)
+  const [isLoading, setIsLoading] = React.useState(true)
 
   React.useEffect(() => {
     if (error !== null) {
@@ -35,6 +36,8 @@ const AuthProvider = ({ children }) => {
   React.useEffect(() => {
     if (localStorageService.getAccessToken()) {
       getCurrentUserData()
+    } else {
+      setIsLoading(false)
     }
   }, [])
 
@@ -44,6 +47,8 @@ const AuthProvider = ({ children }) => {
       setCurrentUser(content)
     } catch (error) {
       errorCatcher(error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -104,7 +109,7 @@ const AuthProvider = ({ children }) => {
         returnSecureToken: true
       })
       setTokens(data)
-      getCurrentUserData()
+      await getCurrentUserData()
     } catch (error) {
       errorCatcher(error)
 
@@ -125,7 +130,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ signUp, signIn, currentUser }}>
-      {children}
+      {!isLoading ? children : 'Loading...'}
     </AuthContext.Provider>
   )
 }
