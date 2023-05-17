@@ -1,15 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { validator } from '../../../utils/validator'
-import api from '../../../api'
-import SelectField from '../Form/SelectField'
+
 import TextAreaField from '../Form/TextAreaField'
 
-const initialData = { userId: '', content: '' }
-
 const AddCommentForm = ({ onSubmit }) => {
-  const [data, setData] = React.useState(initialData)
-  const [users, setUsers] = React.useState({})
+  const [data, setData] = React.useState({})
   const [erros, setErrors] = React.useState({})
 
   const handleChange = (target) => {
@@ -20,11 +16,6 @@ const AddCommentForm = ({ onSubmit }) => {
   }
 
   const validatorConfig = {
-    userId: {
-      isRequired: {
-        message: 'Выберите от чьего имени хотите отправить сообщение'
-      }
-    },
     content: {
       isRequired: {
         message: 'Сообщение не может быть пустым'
@@ -39,16 +30,8 @@ const AddCommentForm = ({ onSubmit }) => {
     return Object.keys(errors).length === 0
   }
 
-  React.useEffect(() => {
-    api.users.fetchAll().then(setUsers)
-  }, [])
-
-  React.useEffect(() => {
-    console.log(users)
-  }, [users])
-
   const clearForm = () => {
-    setData(initialData)
+    setData({})
     setErrors({})
   }
 
@@ -60,27 +43,12 @@ const AddCommentForm = ({ onSubmit }) => {
     clearForm()
   }
 
-  const arrayOfUsers =
-    users &&
-    Object.keys(users).map((userId) => ({
-      label: users[userId].name,
-      value: users[userId]._id
-    }))
-
   return (
     <div>
       <h2>New comment</h2>
       <form onSubmit={handleSubmit}>
-        <SelectField
-          onChange={handleChange}
-          options={arrayOfUsers}
-          name='userId'
-          value={data.userId}
-          defaultOption='Выберите пользователя'
-          error={erros.userId}
-        />
         <TextAreaField
-          value={data.content}
+          value={data.content || ''}
           onChange={handleChange}
           name='content'
           label='Сообщение'

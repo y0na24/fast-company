@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const NavProfile = () => {
   const {
-    currentUser: { name, _id }
+    currentUser: { name, _id, image }
   } = useAuth()
 
   const [isOpen, setIsOpen] = React.useState(false)
@@ -18,7 +18,7 @@ const NavProfile = () => {
       <div className='btn dropdown-toggle d-flex align-items-center'>
         <div className='me-2'>{name}</div>
         <img
-          src='https://avatars.dicebear.com/api/avataaars/qweqasdas.svg'
+          src={image}
           alt='Аватарка'
           className='img-responsive rounded-circle'
           height={40}
@@ -28,10 +28,9 @@ const NavProfile = () => {
         <Link to={`users/${_id}`} className='dropdown-item'>
           Profile
         </Link>
-        <Link to='logout' className='dropdown-item'>
+        <Link to='/logout' className='dropdown-item'>
           Log Out
         </Link>
-        <h1>Some text</h1>
       </div>
     </div>
   )

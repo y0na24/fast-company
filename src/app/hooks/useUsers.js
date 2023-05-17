@@ -32,6 +32,10 @@ const UserProvider = ({ children }) => {
     }
   }
 
+  const getUserById = (userId) => {
+    return users.find((user) => user._id === userId)
+  }
+
   const errorCatcher = (error) => {
     const { message } = error.response.data
     setError(message)
@@ -42,7 +46,7 @@ const UserProvider = ({ children }) => {
   }, [])
 
   return (
-    <UserContext.Provider value={{ users }}>
+    <UserContext.Provider value={{ users, getUserById }}>
       {!isLoading ? children : <h1>Users loading...</h1>}
     </UserContext.Provider>
   )

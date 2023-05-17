@@ -7,6 +7,7 @@ import userSerivce from '../services/user.service'
 import localStorageService, {
   setTokens
 } from '../services/localStorage.service'
+import { useHistory } from 'react-router-dom'
 
 export const httpAuth = axios.create({
   baseURL: 'https://identitytoolkit.googleapis.com/v1/',
@@ -22,6 +23,8 @@ export const useAuth = () => {
 }
 
 const AuthProvider = ({ children }) => {
+  const history = useHistory()
+
   const [currentUser, setCurrentUser] = React.useState()
   const [error, setError] = React.useState(null)
   const [isLoading, setIsLoading] = React.useState(true)
@@ -66,6 +69,13 @@ const AuthProvider = ({ children }) => {
     setError(message)
   }
 
+  const logOut = () => {
+    localStorageService.removeAuthData()
+    setCurrentUser(null)
+
+    history.push('/')
+  }
+
   const randomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
@@ -84,6 +94,9 @@ const AuthProvider = ({ children }) => {
         email,
         rate: randomInt(1, 5),
         completedMeetings: randomInt(0, 200),
+        image: `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1)
+          .toString(36)
+          .substring(7)}.svg`,
         ...rest
       })
     } catch (error) {
@@ -129,7 +142,7 @@ const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ signUp, signIn, currentUser }}>
+    <AuthContext.Provider value={{ signUp, signIn, currentUser, logOut }}>
       {!isLoading ? children : 'Loading...'}
     </AuthContext.Provider>
   )
