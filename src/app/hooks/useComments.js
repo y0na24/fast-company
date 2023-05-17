@@ -1,9 +1,12 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
-// import { toast } from 'react-toastify'
-import { useParams } from 'react-router-dom'
-import { useAuth } from './useAuth'
 import { nanoid } from 'nanoid'
+import { toast } from 'react-toastify'
+import { useParams } from 'react-router-dom'
+
+import { useAuth } from './useAuth'
+
+import commentService from '../services/comment.service'
 
 const CommentsContext = React.createContext()
 
@@ -12,16 +15,23 @@ export const useComments = () => {
 }
 
 export const CommentsProvider = ({ children }) => {
-  // const [isLoading, setIsLoading] = React.useState(true)
+  const [isLoading, setIsLoading] = React.useState(true)
   const [comments, setComments] = React.useState([])
-  // const [error, setError] = React.useState(null)
+  const [error, setError] = React.useState(null)
 
   const { userId } = useParams()
   const { currentUser } = useAuth()
 
   React.useEffect(() => {
-    setComments(null)
-  }, [])
+    getComments()
+  }, [userId])
+
+  React.useEffect(() => {
+    if (error !== null) {
+      toast.error(error)
+      setError(null)
+    }
+  }, [error])
 
   const createComment = async (data) => {
     const comment = {
@@ -32,11 +42,32 @@ export const CommentsProvider = ({ children }) => {
       userId: currentUser._id
     }
 
-    console.log(comment)
+    try {
+      const { content } = await commentService.createComment(comment)
+      setComments((prevState) => [...prevState, content])
+    } catch (error) {
+      errorCatcher(error)
+    }
+  }
+
+  const getComments = async () => {
+    try {
+      const { content } = await commentService.getComments(userId)
+      setComments(content)
+    } catch (error) {
+      errorCatcher(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const errorCatcher = (error) => {
+    const { message } = error.response.data
+    setError(message)
   }
 
   return (
-    <CommentsContext.Provider value={{ comments, createComment }}>
+    <CommentsContext.Provider value={{ comments, createComment, isLoading }}>
       {children}
     </CommentsContext.Provider>
   )
