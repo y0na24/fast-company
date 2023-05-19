@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { validator } from '../../../utils/validator'
-import api from '../../../api'
 import TextField from '../../common/Form/TextField'
 import SelectField from '../../common/Form/SelectField'
 import RadioField from '../../common/Form/RadioField'
 import MultiSelectField from '../../common/Form/MultiSelectField'
 import BackHistoryButton from '../../common/BackHistoryButton'
+import { useQualities } from '../../../hooks/useQualities'
+import { useProfessions } from '../../../hooks/useProfession'
+import { useAuth } from '../../../hooks/useAuth'
 
 const EditUserPage = () => {
-  const { userId } = useParams()
+  const [errors, setErrors] = useState({})
   const history = useHistory()
   const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState({
@@ -19,90 +21,41 @@ const EditUserPage = () => {
     sex: 'male',
     qualities: []
   })
-  const [professions, setProfession] = useState([])
-  const [qualities, setQualities] = useState([])
-  const [errors, setErrors] = useState({})
 
-  const getProfessionById = (id) => {
-    for (const prof of professions) {
-      if (prof.value === id) {
-        return { _id: prof.value, name: prof.label }
-      }
-    }
-  }
+  const { updateUser, currentUser } = useAuth()
 
-  const getQualities = (elements) => {
-    const qualitiesArray = []
-    for (const elem of elements) {
-      for (const quality in qualities) {
-        if (elem.value === qualities[quality].value) {
-          qualitiesArray.push({
-            _id: qualities[quality].value,
-            name: qualities[quality].label,
-            color: qualities[quality].color
-          })
-        }
-      }
-    }
-    return qualitiesArray
-  }
+  const user = currentUser
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const { qualities, getQualities } = useQualities()
+  const { professions } = useProfessions()
 
-    const isValid = validate()
-    if (!isValid) return
-    const { profession, qualities } = data
-
-    api.users
-      .update(userId, {
-        ...data,
-        profession: getProfessionById(profession),
-        qualities: getQualities(qualities)
-      })
-      .then((data) => history.push(`/users/${data._id}`))
-
-    console.log({
-      ...data,
-      profession: getProfessionById(profession),
-      qualities: getQualities(qualities)
-    })
+  const getQualityId = (qualities) => {
+    return qualities.map((q) => q.value)
   }
 
   const transformData = (data) => {
-    return data.map((qual) => ({ label: qual.name, value: qual._id }))
+    return data.map((qual) => {
+      const { _id, name } = getQualities(qual)
+
+      return {
+        label: name,
+        value: _id
+      }
+    })
   }
 
   useEffect(() => {
     setIsLoading(true)
 
-    api.users.getById(userId).then(({ profession, qualities, ...data }) =>
-      setData((prevState) => ({
-        ...prevState,
-        ...data,
-        qualities: transformData(qualities),
-        profession: profession._id
-      }))
-    )
+    const { profession, qualities, ...data } = user
 
-    api.professions.fetchAll().then((data) => {
-      const professionsList = Object.keys(data).map((professionName) => ({
-        label: data[professionName].name,
-        value: data[professionName]._id
-      }))
-      setProfession(professionsList)
-    })
-
-    api.qualities.fetchAll().then((data) => {
-      const qualitiesList = Object.keys(data).map((optionName) => ({
-        value: data[optionName]._id,
-        label: data[optionName].name,
-        color: data[optionName].color
-      }))
-
-      setQualities(qualitiesList)
-    })
-  }, [])
+    setData((prevState) => ({
+      ...prevState,
+      ...data,
+      qualities: transformData(qualities),
+      profession
+    }))
+  }, [user])
 
   useEffect(() => {
     if (data._id) setIsLoading(false)
@@ -142,6 +95,20 @@ const EditUserPage = () => {
   }
 
   const isValid = Object.keys(errors).length === 0
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    const isValid = validate()
+    if (!isValid) return
+
+    updateUser({
+      ...data,
+      qualities: getQualityId(data.qualities)
+    })
+
+    history.goBack()
+  }
 
   return (
     <div className='container mt-5'>

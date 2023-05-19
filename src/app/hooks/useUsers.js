@@ -32,6 +32,10 @@ const UserProvider = ({ children }) => {
     }
   }
 
+  React.useState(() => {
+    getUsers()
+  }, [])
+
   const getUserById = (userId) => {
     return users.find((user) => user._id === userId)
   }
@@ -40,10 +44,6 @@ const UserProvider = ({ children }) => {
     const { message } = error.response.data
     setError(message)
   }
-
-  React.useState(() => {
-    getUsers()
-  }, [])
 
   return (
     <UserContext.Provider value={{ users, getUserById }}>
