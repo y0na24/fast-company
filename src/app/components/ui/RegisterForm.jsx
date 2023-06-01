@@ -8,11 +8,11 @@ import RadioField from '../common/Form/RadioField'
 import MultiSelectField from '../common/Form/MultiSelectField'
 import CheckBoxField from '../common/Form/CheckBoxField'
 
-import { useProfessions } from '../../hooks/useProfession'
 import { useAuth } from '../../hooks/useAuth'
 import { validator } from '../../utils/validator'
 
 import { getQualities } from '../../store/qualititesSlice'
+import { getProfessions } from '../../store/professionsSlice'
 
 const RegisterForm = () => {
 	const history = useHistory()
@@ -30,7 +30,7 @@ const RegisterForm = () => {
 
 	const { signUp } = useAuth()
 	const qualities = useSelector(getQualities())
-	const { professions } = useProfessions()
+	const professions = useSelector(getProfessions())
 
 	const handleChange = target => {
 		setFormData(prevState => ({

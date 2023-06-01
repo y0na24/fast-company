@@ -9,7 +9,6 @@ import RadioField from '../../common/Form/RadioField'
 import MultiSelectField from '../../common/Form/MultiSelectField'
 import BackHistoryButton from '../../common/BackHistoryButton'
 
-import { useProfessions } from '../../../hooks/useProfession'
 import { useAuth } from '../../../hooks/useAuth'
 
 import {
@@ -17,6 +16,7 @@ import {
 	getQualitiesLoadingStatus,
 	getQualitiesByIds,
 } from '../../../store/qualititesSlice'
+import { getProfessions, getProfessionsLoadingStatus } from '../../../store/professionsSlice'
 
 const EditUserPage = () => {
 	const [errors, setErrors] = React.useState({})
@@ -30,7 +30,8 @@ const EditUserPage = () => {
 	const qualitiesLoading = useSelector(getQualitiesLoadingStatus())
 	const qualititesList = useSelector(getQualitiesByIds(currentUser.qualities))
 
-	const { professions, isLoading: professionsLoading } = useProfessions()
+	const professionsLoading = useSelector(getProfessionsLoadingStatus())
+	const professions = useSelector(getProfessions())
 
 	React.useEffect(() => {
 		if (!professionsLoading && !qualitiesLoading && currentUser && !data) {
