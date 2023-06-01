@@ -1,47 +1,42 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { validator } from '../../../utils/validator'
+
 import TextField from '../../common/Form/TextField'
 import SelectField from '../../common/Form/SelectField'
 import RadioField from '../../common/Form/RadioField'
 import MultiSelectField from '../../common/Form/MultiSelectField'
 import BackHistoryButton from '../../common/BackHistoryButton'
-import { useQualities } from '../../../hooks/useQualities'
+
 import { useProfessions } from '../../../hooks/useProfession'
 import { useAuth } from '../../../hooks/useAuth'
+
+import {
+	getQualities,
+	getQualitiesLoadingStatus,
+	getQualitiesByIds,
+} from '../../../store/qualititesSlice'
 
 const EditUserPage = () => {
 	const [errors, setErrors] = React.useState({})
 	const history = useHistory()
 	const [isLoading, setIsLoading] = React.useState(true)
 	const [data, setData] = React.useState()
-
 	const { currentUser, updateUserData } = useAuth()
 
-	const {
-		qualities,
-		getQualities,
-		isLoading: qualitiesLoading,
-	} = useQualities()
+	const qualities = useSelector(getQualities())
+
+	const qualitiesLoading = useSelector(getQualitiesLoadingStatus())
+	const qualititesList = useSelector(getQualitiesByIds(currentUser.qualities))
 
 	const { professions, isLoading: professionsLoading } = useProfessions()
-
-	const transformData = data => {
-		return data.map(qual => {
-			const { _id, name } = getQualities(qual)
-
-			return {
-				label: name,
-				value: _id,
-			}
-		})
-	}
 
 	React.useEffect(() => {
 		if (!professionsLoading && !qualitiesLoading && currentUser && !data) {
 			setData({
 				...currentUser,
-				qualities: transformData(currentUser.qualities),
+				qualities: qualititesList.map(q => ({ label: q.name, value: q._id })),
 			})
 		}
 	}, [professionsLoading, qualitiesLoading, currentUser, data])
