@@ -7,15 +7,13 @@ import GroupList from '../../common/GroupList'
 import UsersTable from '../../ui/UsersTable'
 import SearchStatus from '../../ui/SearchStatus'
 
-import { useAuth } from '../../../hooks/useAuth'
-
 import { paginate } from '../../../utils/paginate'
 
 import {
 	getProfessions,
 	getProfessionsLoadingStatus,
 } from '../../../store/professionsSlice'
-import { getUsersList } from '../../../store/usersSlice'
+import { getCurrentUserId, getUsersList } from '../../../store/usersSlice'
 
 const UsersListPage = () => {
 	const [currentPage, setCurrentPage] = React.useState(1)
@@ -27,7 +25,7 @@ const UsersListPage = () => {
 	const professionsLoading = useSelector(getProfessionsLoadingStatus())
 	const professions = useSelector(getProfessions())
 
-	const { currentUser } = useAuth()
+	const currentUserId = useSelector(getCurrentUserId())
 
 	const pageSize = 8
 
@@ -82,7 +80,7 @@ const UsersListPage = () => {
 				)
 				: data
 
-			return filteredUsers.filter(u => u._id !== currentUser._id)
+			return filteredUsers.filter(u => u._id !== currentUserId)
 		}
 
 		const filteredUsers = filterUsers(users)
