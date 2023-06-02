@@ -4,6 +4,7 @@ import userService from '../services/user.service'
 import authService from '../services/auth.service'
 import localStorageService from '../services/localStorage.service'
 import getRandomInt from '../utils/getRandomInt'
+import history from '../utils/history'
 
 const usersSlice = createSlice({
 	name: 'users',
@@ -52,6 +53,23 @@ const authRequested = createAction('users/authRequested')
 const userCreateRequested = createAction('users/userCreateRequested')
 const userCreateFail = createAction('user/userCreateFail')
 
+export const singIn =
+	({ payload, redirect }) =>
+	async dispatch => {
+		const { email, password } = payload
+
+		dispatch(authRequested)
+
+		try {
+			const data = await authService.signIn({ email, password })
+			dispatch(authRequestSuccess({ userId: data.localId }))
+			localStorageService.setTokens(data)
+			history.push(redirect)
+		} catch (error) {
+			dispatch(authRequestFailed(error.message))
+		}
+	}
+
 export const signUp =
 	({ email, password, ...rest }) =>
 	async dispatch => {
@@ -86,6 +104,7 @@ function createUser(payload) {
 		try {
 			const { content } = await userService.create(payload)
 			dispatch(userCreated(content))
+			history.push('/users')
 		} catch (error) {
 			dispatch(userCreateFail(error.message))
 		}
