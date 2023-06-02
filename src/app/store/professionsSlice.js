@@ -5,7 +5,7 @@ import professionService from '../services/profession.service'
 const professionsSlice = createSlice({
 	name: 'professions',
 	initialState: {
-		entites: null,
+		entities: null,
 		isLoading: true,
 		error: null,
 		lastFetch: null,
@@ -15,7 +15,7 @@ const professionsSlice = createSlice({
 			state.isLoading = true
 		},
 		professionsReceived(state, action) {
-			state.entites = action.payload
+			state.entities = action.payload
 			state.isLoading = false
 		},
 		professionsRequestFailed(state, action) {
@@ -40,13 +40,13 @@ export const loadProfessionsList = () => async (dispatch, getState) => {
 	}
 }
 export const getProfessionById = id => state => {
-	if (state.professions.entites) {
-		const professions = state.professions.entites
+	if (state.professions.entities) {
+		const professions = state.professions.entities
 		return professions.find(p => p._id === id)
 	}
 }
 
-export const getProfessions = () => state => state.professions.entites
+export const getProfessions = () => state => state.professions.entities
 
 export const getProfessionsLoadingStatus = () => state =>
 	state.professions.isLoading

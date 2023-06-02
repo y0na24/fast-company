@@ -5,7 +5,7 @@ import qualitiesService from '../services/qualities.service'
 const qualitiesSlice = createSlice({
 	name: 'qualities',
 	initialState: {
-		entites: null,
+		entities: null,
 		isLoading: true,
 		error: null,
 		lastFetch: null,
@@ -15,7 +15,7 @@ const qualitiesSlice = createSlice({
 			state.isLoading = true
 		},
 		qualitiesReceived(state, action) {
-			state.entites = action.payload
+			state.entities = action.payload
 			state.lastFetch = Date.now()
 			state.isLoading = false
 		},
@@ -47,16 +47,16 @@ export const loadQualitiesList = () => async (dispatch, getState) => {
 	}
 }
 
-export const getQualities = () => state => state.qualities.entites
+export const getQualities = () => state => state.qualities.entities
 
 export const getQualitiesLoadingStatus = () => state =>
 	state.qualities.isLoading
 
 export const getQualitiesByIds = qualitiesIds => state => {
-	if (state.qualities.entites) {
+	if (state.qualities.entities) {
 		const qualArray = []
 		for (const qualId of qualitiesIds) {
-			for (const qual of state.qualities.entites) {
+			for (const qual of state.qualities.entities) {
 				if (qual._id === qualId) {
 					qualArray.push(qual)
 					break

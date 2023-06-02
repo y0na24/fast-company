@@ -6,22 +6,33 @@ import localStorageService from '../services/localStorage.service'
 import getRandomInt from '../utils/getRandomInt'
 import history from '../utils/history'
 
+const initialState = localStorageService.getAccessToken()
+	? {
+			entities: [],
+			isLoading: true,
+			error: null,
+			auth: { userId: localStorageService.getUserId() },
+			isLoggedIn: true,
+			dataLoaded: false,
+	}
+	: {
+			entities: [],
+			isLoading: false,
+			error: null,
+			auth: null,
+			isLoggedIn: false,
+			dataLoaded: false,
+	}
+
 const usersSlice = createSlice({
 	name: 'users',
-	initialState: {
-		entites: [],
-		isLoading: true,
-		error: null,
-		auth: null,
-		isLoggedIn: false,
-		dataLoaded: false,
-	},
+	initialState,
 	reducers: {
 		usersRequested(state) {
 			state.isLoading = true
 		},
 		usersReceived(state, action) {
-			state.entites = action.payload
+			state.entities = action.payload
 			state.dataLoaded = true
 			state.isLoading = false
 		},
@@ -37,7 +48,7 @@ const usersSlice = createSlice({
 			state.error = action.payload
 		},
 		userCreated(state, action) {
-			state.entites.push(action.payload)
+			state.entities.push(action.payload)
 		},
 	},
 })
@@ -126,18 +137,27 @@ export const loadUsersList = () => async (dispatch, getState) => {
 }
 
 export const getUserById = userId => state => {
-	if (state.users.entites) {
-		const users = state.users.entites
+	if (state.users.entities) {
+		const users = state.users.entities
 		return users.find(u => u._id === userId)
 	}
 }
 
-export const getUsersList = () => state => state.users.entites
+export const getUsersList = () => state => state.users.entities
+
+export const getUsersLoadingStatus = () => state => state.users.isLoading
+
+export const getCurrentUserId = () => state => state.users.auth.userId
+
+export const getCurrentUserData = () => state => {
+	if (state.users.entities) {
+		return state.users.entities.find(u => u._id === state.users.auth.userId)
+	}
+	return null
+}
 
 export const getIsLoggedIn = () => state => state.users.isLoggedIn
 
 export const getDataStatus = () => state => state.users.dataLoaded
-
-export const getCurrentUserId = () => state => state.users.auth.userId
 
 export default usersReducer

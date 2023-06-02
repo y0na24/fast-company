@@ -16,20 +16,24 @@ import {
 	getQualitiesLoadingStatus,
 	getQualitiesByIds,
 } from '../../../store/qualititesSlice'
-import { getProfessions, getProfessionsLoadingStatus } from '../../../store/professionsSlice'
+import {
+	getProfessions,
+	getProfessionsLoadingStatus,
+} from '../../../store/professionsSlice'
+import { getCurrentUserData } from '../../../store/usersSlice'
 
 const EditUserPage = () => {
 	const [errors, setErrors] = React.useState({})
 	const history = useHistory()
 	const [isLoading, setIsLoading] = React.useState(true)
 	const [data, setData] = React.useState()
-	const { currentUser, updateUserData } = useAuth()
 
+	const { updateUserData } = useAuth()
+
+	const currentUser = useSelector(getCurrentUserData())
 	const qualities = useSelector(getQualities())
-
 	const qualitiesLoading = useSelector(getQualitiesLoadingStatus())
 	const qualititesList = useSelector(getQualitiesByIds(currentUser.qualities))
-
 	const professionsLoading = useSelector(getProfessionsLoadingStatus())
 	const professions = useSelector(getProfessions())
 

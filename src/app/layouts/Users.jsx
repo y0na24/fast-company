@@ -5,8 +5,6 @@ import UserPage from '../components/page/UserPage'
 import UsersListPage from '../components/page/UsersListPage'
 import EditUserPage from '../components/page/EditUserPage'
 
-import UserProvider from '../hooks/useUsers'
-
 import UsersLoader from '../components/ui/hoc/UsersLoader'
 import { useSelector } from 'react-redux'
 import { getCurrentUserId } from '../store/usersSlice'
@@ -19,21 +17,19 @@ const Users = () => {
 	return (
 		<>
 			<UsersLoader>
-				<UserProvider>
-					{userId ? (
-						edit ? (
-							userId === currentUserId ? (
-								<EditUserPage />
-							) : (
-								<Redirect to={`/users/${currentUserId}/edit`} />
-							)
+				{userId ? (
+					edit ? (
+						userId === currentUserId ? (
+							<EditUserPage />
 						) : (
-							<UserPage userId={userId} />
+							<Redirect to={`/users/${currentUserId}/edit`} />
 						)
 					) : (
-						<UsersListPage />
-					)}
-				</UserProvider>
+						<UserPage userId={userId} />
+					)
+				) : (
+					<UsersListPage />
+				)}
 			</UsersLoader>
 		</>
 	)
