@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-import userSerivce from '../services/user.service'
+import userService from '../services/user.service'
 import localStorageService, {
 	setTokens,
 } from '../services/localStorage.service'
@@ -46,7 +46,7 @@ const AuthProvider = ({ children }) => {
 
 	const getCurrentUserData = async () => {
 		try {
-			const { content } = await userSerivce.getCurrentUser()
+			const { content } = await userService.getCurrentUser()
 			setCurrentUser(content)
 		} catch (error) {
 			errorCatcher(error)
@@ -57,7 +57,7 @@ const AuthProvider = ({ children }) => {
 
 	const createUser = async data => {
 		try {
-			const { content } = await userSerivce.create(data)
+			const { content } = await userService.create(data)
 			setCurrentUser(content)
 		} catch (error) {
 			errorCatcher(error)
@@ -66,7 +66,7 @@ const AuthProvider = ({ children }) => {
 
 	const updateUserData = async data => {
 		try {
-			const { content } = await userSerivce.update(data)
+			const { content } = await userService.update(data)
 			setCurrentUser(content)
 		} catch (erorr) {
 			errorCatcher(erorr)
@@ -85,9 +85,7 @@ const AuthProvider = ({ children }) => {
 		history.push('/')
 	}
 
-	const randomInt = (min, max) => {
-		return Math.floor(Math.random() * (max - min + 1) + min)
-	}
+	
 
 	const signUp = async ({ email, password, ...rest }) => {
 		try {

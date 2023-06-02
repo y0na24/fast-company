@@ -3,7 +3,7 @@ import localStorageService from './localStorage.service'
 
 const userEndPoint = 'user/'
 
-const userSerivce = {
+const userService = {
 	get: async () => {
 		const { data } = await httpService.get(userEndPoint)
 		return data
@@ -30,4 +30,4 @@ const userSerivce = {
 	},
 }
 
-export default userSerivce
+export default userService

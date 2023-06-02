@@ -40,11 +40,14 @@ export const loadProfessionsList = () => async (dispatch, getState) => {
 	}
 }
 export const getProfessionById = id => state => {
-	const professions = state.professions.entites
-	return professions.find(p => p._id === id)
+	if (state.professions.entites) {
+		const professions = state.professions.entites
+		return professions.find(p => p._id === id)
+	}
 }
 
 export const getProfessions = () => state => state.professions.entites
+
 export const getProfessionsLoadingStatus = () => state =>
 	state.professions.isLoading
 

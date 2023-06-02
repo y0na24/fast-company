@@ -1,20 +1,21 @@
 import React from 'react'
 import _ from 'lodash'
+import { useSelector } from 'react-redux'
 
 import Pagination from '../../common/Pagination'
 import GroupList from '../../common/GroupList'
 import UsersTable from '../../ui/UsersTable'
 import SearchStatus from '../../ui/SearchStatus'
 
-import { useUser } from '../../../hooks/useUsers'
+import { useAuth } from '../../../hooks/useAuth'
 
 import { paginate } from '../../../utils/paginate'
-import { useAuth } from '../../../hooks/useAuth'
-import { useSelector } from 'react-redux'
+
 import {
 	getProfessions,
 	getProfessionsLoadingStatus,
 } from '../../../store/professionsSlice'
+import { getUsersList } from '../../../store/usersSlice'
 
 const UsersListPage = () => {
 	const [currentPage, setCurrentPage] = React.useState(1)
@@ -22,10 +23,11 @@ const UsersListPage = () => {
 	const [selectedProf, setSelectedProf] = React.useState()
 	const [sortBy, setSortBy] = React.useState({ path: 'name', order: 'asc' })
 
-	const { users } = useUser()
-	const { currentUser } = useAuth()
+	const users = useSelector(getUsersList())
 	const professionsLoading = useSelector(getProfessionsLoadingStatus())
 	const professions = useSelector(getProfessions())
+
+	const { currentUser } = useAuth()
 
 	const pageSize = 8
 

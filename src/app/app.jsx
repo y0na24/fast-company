@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useDispatch } from 'react-redux'
 import { loadQualitiesList } from './store/qualititesSlice'
 import { loadProfessionsList } from './store/professionsSlice'
+import { loadUsersList } from './store/usersSlice'
 
 function App() {
 	const dispatch = useDispatch()
@@ -22,6 +23,7 @@ function App() {
 	React.useEffect(() => {
 		dispatch(loadQualitiesList())
 		dispatch(loadProfessionsList())
+		dispatch(loadUsersList())
 	}, [])
 
 	return (

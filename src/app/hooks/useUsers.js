@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { toast } from 'react-toastify'
 
-import userSerivce from '../services/user.service'
+import userService from '../services/user.service'
 import { useAuth } from './useAuth'
 
 const UserContext = React.createContext()
@@ -26,7 +26,7 @@ const UserProvider = ({ children }) => {
 
 	const getUsers = async () => {
 		try {
-			const { content } = await userSerivce.get()
+			const { content } = await userService.get()
 			setUsers(content)
 			setIsLoading(false)
 		} catch (error) {
