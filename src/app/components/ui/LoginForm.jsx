@@ -1,13 +1,13 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 import TextField from '../common/Form/TextField'
 import CheckBoxField from '../common/Form/CheckBoxField'
 
 import { validator } from '../../utils/validator'
 
-import { useDispatch } from 'react-redux'
-import { singIn } from '../../store/usersSlice'
+import { getAuthError, singIn } from '../../store/usersSlice'
 
 const LoginForm = () => {
 	const dispatch = useDispatch()
@@ -19,15 +19,15 @@ const LoginForm = () => {
 		password: '',
 		stayOn: false,
 	})
+
+	const loginError = useSelector(getAuthError())
 	const [errors, setErrors] = React.useState({})
-	const [enterError, setEnterError] = React.useState(null)
 
 	const handleChange = target => {
 		setFormData(prevState => ({
 			...prevState,
 			[target.name]: target.value,
 		}))
-		setEnterError(null)
 	}
 
 	const validatorConfig = {
@@ -99,7 +99,7 @@ const LoginForm = () => {
 			>
 				Оставаться в системе
 			</CheckBoxField>
-			{enterError && <p className='text-danger'>{enterError}</p>}
+			{loginError && <p className='text-danger'>{loginError}</p>}
 			<button
 				className='btn btn-primary w-100 mx-auto'
 				type='submit'

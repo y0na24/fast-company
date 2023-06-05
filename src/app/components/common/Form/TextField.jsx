@@ -15,6 +15,7 @@ const TextField = ({ label, type, name, value, error, onChange }) => {
   const getInputClasses = () => {
     return 'form-control' + (error ? ' is-invalid' : '')
   }
+
   return (
     <div className='mb-4'>
       <label htmlFor={name}>{label}</label>
@@ -45,6 +46,7 @@ const TextField = ({ label, type, name, value, error, onChange }) => {
 TextField.defaultTypes = {
   type: 'text'
 }
+
 TextField.propTypes = {
   label: PropTypes.string,
   type: PropTypes.string,

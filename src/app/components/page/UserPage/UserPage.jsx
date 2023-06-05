@@ -14,6 +14,8 @@ import { getUserById } from '../../../store/usersSlice'
 const UserPage = ({ userId }) => {
 	const user = useSelector(getUserById(userId))
 
+	React.useEffect(() => {}, [])
+
 	if (user) {
 		return (
 			<div className='container'>
