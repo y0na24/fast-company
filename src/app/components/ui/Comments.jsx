@@ -6,19 +6,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import CommentsList from '../common/Comments/CommentsList'
 import AddCommentForm from '../common/Comments/AddCommentForm'
 
-import { useComments } from '../../hooks/useComments'
-
 import {
+	createComment,
 	getComments,
 	getCommentsLoadingStatus,
 	loadCommentsList,
+	removeComment,
 } from '../../store/commentsSlice'
 
 const Comments = () => {
 	const { userId } = useParams()
 	const dispatch = useDispatch()
-
-	const { createComment, removeComment } = useComments()
 
 	const comments = useSelector(getComments())
 	const isLoading = useSelector(getCommentsLoadingStatus())
@@ -28,11 +26,11 @@ const Comments = () => {
 	}, [userId])
 
 	const handleSubmit = data => {
-		createComment(data)
+		dispatch(createComment(data, userId))
 	}
 
 	const handleRemoveComment = id => {
-		removeComment(id)
+		dispatch(removeComment(id))
 	}
 
 	const sortedComments = orderBy(comments, ['created_at'], ['desc'])

@@ -25,7 +25,7 @@ const Users = () => {
 							<Redirect to={`/users/${currentUserId}/edit`} />
 						)
 					) : (
-						<UserPage userId={currentUserId} />
+						<UserPage userId={userId} />
 					)
 				) : (
 					<UsersListPage />
