@@ -10,15 +10,12 @@ import NavBar from './components/ui/NavBar'
 import ProtectedRoute from './components/common/ProtectedRoute'
 import LogOut from './layouts/LogOut'
 
-import AuthProvider from './hooks/useAuth'
-
 import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
 	return (
 		<>
 			<AppLoader>
-				<AuthProvider>
 					<NavBar />
 					<Switch>
 						<Route exact path='/' component={Main} />
@@ -27,7 +24,6 @@ function App() {
 						<ProtectedRoute path='/users/:userId?/:edit?' component={Users} />
 						<Redirect to='/' />
 					</Switch>
-				</AuthProvider>
 				<ToastContainer />
 			</AppLoader>
 		</>

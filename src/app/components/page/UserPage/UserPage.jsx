@@ -7,8 +7,6 @@ import QualitiesCard from '../../ui/QualitiesCard'
 import MeetingsCard from '../../ui/MeetingsCard'
 import Comments from '../../ui/Comments'
 
-import { CommentsProvider } from '../../../hooks/useComments'
-
 import { getUserById } from '../../../store/usersSlice'
 
 const UserPage = ({ userId }) => {
@@ -24,9 +22,7 @@ const UserPage = ({ userId }) => {
 						<MeetingsCard completedMeetings={user.completedMeetings} />
 					</div>
 					<div className='col-md-8'>
-						<CommentsProvider>
-							<Comments />
-						</CommentsProvider>
+						<Comments />
 					</div>
 				</div>
 			</div>

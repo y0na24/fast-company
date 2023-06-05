@@ -8,8 +8,6 @@ import RadioField from '../../common/Form/RadioField'
 import MultiSelectField from '../../common/Form/MultiSelectField'
 import BackHistoryButton from '../../common/BackHistoryButton'
 
-// import { useAuth } from '../../../hooks/useAuth'
-
 import {
 	getQualities,
 	getQualitiesLoadingStatus,
@@ -26,8 +24,6 @@ const EditUserPage = () => {
 	const [errors, setErrors] = React.useState({})
 	const [isLoading, setIsLoading] = React.useState(true)
 	const [data, setData] = React.useState()
-
-	// const { updateUserData } = useAuth()
 
 	const currentUser = useSelector(getCurrentUserData())
 	const qualities = useSelector(getQualities())

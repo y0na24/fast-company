@@ -23,12 +23,11 @@ const commentsSlice = createSlice({
 			state.isLoading = false
 		},
 		commentCreated(state, action) {
-			console.log(action.payload)
 			state.entities.push(action.payload)
 		},
 		commentRemoved(state, action) {
 			state.entities = state.entities.filter(
-				item => item._id !== action.payload
+				comment => comment._id !== action.payload
 			)
 		},
 	},
