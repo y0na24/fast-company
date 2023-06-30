@@ -1,6 +1,5 @@
 {
 	"name": "fast-company",
-	"homepage": "https://y0na24.github.io/fast-company",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
