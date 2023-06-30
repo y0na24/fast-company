@@ -33,6 +33,7 @@ const UsersListPage = () => {
 		// setUsers(users.filter((user) => user._id !== userId))
 		console.log(userId)
 	}
+
 	const handleToggleBookMark = id => {
 		const newArray = users.map(user => {
 			if (user._id === id) {
@@ -75,8 +76,9 @@ const UsersListPage = () => {
 				)
 				: selectedProf
 				? data.filter(
-						user =>
-							JSON.stringify(user.profession) === JSON.stringify(selectedProf)
+						user => {
+							return user.profession === selectedProf._id
+						}
 				)
 				: data
 
