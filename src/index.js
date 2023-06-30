@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 const store = createStore()
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
+
 root.render(
 	<Router history={history}>
 		<Provider store={store}>
