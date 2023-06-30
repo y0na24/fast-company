@@ -1,5 +1,5 @@
 
-<h1 align="center" id="title">👫Fast-company</h1>
+<h1 align="center" id="title">Fast-company👫</h1>
 
 <p id="description">Приложения для поиска компании на вечер. </p>
 <p id="description">Данные для входа: email - test@mail.ru, пароль - Test1234</p>
