@@ -104,7 +104,13 @@ export const singIn =
 			localStorageService.setTokens(data)
 			history.push(redirect)
 		} catch (error) {
-			dispatch(authRequestFailed(error.message))
+			const { code, message } = error.response.data.error
+			if (code === 400) {
+				const errorMessage = generateAuthError(message)
+				dispatch(authRequestFailed(errorMessage))
+			} else {
+				dispatch(authRequestFailed(error.message))
+			}
 		}
 	}
 
@@ -131,7 +137,7 @@ export const signUp =
 				})
 			)
 		} catch (error) {
-			const { code, message } = error.respose.data.error
+			const { code, message } = error.response.data.error
 			if (code === 400) {
 				const errorMessage = generateAuthError(message)
 				dispatch(authRequestFailed(errorMessage))
