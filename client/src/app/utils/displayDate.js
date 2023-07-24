@@ -1,5 +1,5 @@
 export function displayDate(data) {
-  const date = new Date(parseInt(data))
+  const date = new Date(data)
   const dateNow = new Date()
   const yearDif = dateNow.getFullYear() - date.getFullYear()
 
@@ -20,7 +20,7 @@ export function displayDate(data) {
       return `${date.getHours()}:${date.getMinutes()}`
     }
     return `${date.getDay()} ${date.toLocaleString('default', {
-      month: 'long'
+      month: 'long',
     })}`
   }
 
