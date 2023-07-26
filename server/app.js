@@ -11,7 +11,12 @@ const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use(cors())
+app.use(
+  cors({
+    origin: ['https://fast-company-frontend.vercel.app'],
+    credentials: true,
+  })
+)
 
 app.use('/api', routes)
 
@@ -34,15 +39,15 @@ const PORT = config.get('port') ?? 8080
 //   })
 // }
 
-if (process.env.NODE_ENV === "production") {
-  const path = require("path");
-  app.use(express.static(path.resolve(__dirname, 'client', 'build')));
-  app.get("*", (req, res) => {
-      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'),function (err) {
-          if(err) {
-              res.status(500).send(err)
-          }
-      });
+if (process.env.NODE_ENV === 'production') {
+  const path = require('path')
+  app.use(express.static(path.resolve(__dirname, 'client', 'build')))
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'), function (err) {
+      if (err) {
+        res.status(500).send(err)
+      }
+    })
   })
 }
 
