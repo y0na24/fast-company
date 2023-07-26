@@ -23,13 +23,26 @@ const PORT = config.get('port') ?? 8080
 //   console.log('Development')
 // }
 
-if (process.env.NODE_ENV === 'production') {
-  app.use('/', express.static(path.join(__dirname, 'client')))
+//Docker
+// if (process.env.NODE_ENV === 'production') {
+//   app.use('/', express.static(path.join(__dirname, 'client')))
 
-  const indexPath = path.join(__dirname, 'client', 'index.html')
+//   const indexPath = path.join(__dirname, 'client', 'index.html')
 
-  app.get('*', (req, res) => {
-    res.sendFile(indexPath)
+//   app.get('*', (req, res) => {
+//     res.sendFile(indexPath)
+//   })
+// }
+
+if (process.env.NODE_ENV === "production") {
+  const path = require("path");
+  app.use(express.static(path.resolve(__dirname, 'client', 'build')));
+  app.get("*", (req, res) => {
+      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'),function (err) {
+          if(err) {
+              res.status(500).send(err)
+          }
+      });
   })
 }
 
