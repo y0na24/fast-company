@@ -23,6 +23,7 @@
 *   Node.js
 *   Express
 *   Axios
+*   Docker
 
 <h2>Локальный запуск:</h2>
 
